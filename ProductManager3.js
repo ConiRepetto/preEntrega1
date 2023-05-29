@@ -1,4 +1,3 @@
-//const fs = require('fs')
 import fs from "fs"
 
 class ProductManager {
@@ -12,11 +11,11 @@ class ProductManager {
         this.#addFile();
     }
 
-    #addFile(){
-        if(fs.existsSync(this.#path)){
+    #addFile() {
+        if (fs.existsSync(this.#path)) {
             const dataProducts = fs.readFileSync(this.#path, 'utf-8')
             this.#products = JSON.parse(dataProducts)
-        }else{
+        } else {
             const data = JSON.stringify(this.#products)
             fs.writeFileSync(this.#path, data)
         }
@@ -39,8 +38,8 @@ class ProductManager {
             return element.code == product.code
         })
 
-        if(!title || !description || !price || !thumbnail || !code || !stock ) {
-            throw new Error ("Error: Falta completar campos del producto")
+        if (!title || !description || !price || !thumbnail || !code || !stock) {
+            throw new Error("Error: Falta completar campos del producto")
         } else if (existsProduct || existsCode) {
             console.log('Error: Producto ya agregado a la lista')
         } else {
@@ -62,47 +61,39 @@ class ProductManager {
     }
 
     updateProduct(id, key, value) {
-		const products = this.getProducts();
-		const product = products.find(product => product.id === id);
+        const products = this.getProducts();
+        const product = products.find(product => product.id === id);
 
-		if (!product) {
-			return `Error: Producto ${id} no existe`;
+        if (!product) return `Error: Producto ${id} no existe`;
+        if (!(key in product)) return `No hay dato "${key}" en este producto ${id}`;
+        if (!value) return `El valor ingresado es incorrecto`;
+        product[key] = value;
+        try {
+            fs.writeFileSync(this.#path, JSON.stringify(products));
+            return `Se actualizo ${key} en Producto ${id}`
+        } catch (err) {
+            return `Error: ${err}`;
+        };
+    };
 
-		} else if (!(key in product)) {
-			return `No hay dato "${key}" en este producto ${id}`;
-	
-		} else if (!value) {
-			return `El valor ingresado es incorrecto`;
-		} else {
-			product[key] = value;
-		
-			try {
-				fs.writeFileSync(this.#path, JSON.stringify(products));
-                return `Se actualizo ${key} en Producto ${id}`
-			} catch (err) {
-				return `Error: ${err}`;
-			};
-		};
-	};
+    deleteProduct(id) {
+        const products = this.getProducts();
+        const productList = products.findIndex(product => product.id === id);
+    
+        if (productList !== -1) {
+            products.splice(productList, 1);
+            try {
+    
+                fs.writeFileSync(this.#path, JSON.stringify(products));
+            } catch (err) {
+                return `Error: ${err}`;
+            };
+        } else {
+            return `No hay productos con el ID: ${id}`;
+        };
+    };
 
-	deleteProduct(id) {
-		const products = this.getProducts();
-		const productList = products.findIndex(product => product.id === id);
-
-		if (productList !== -1) {
-			products.splice(productList, 1);
-			try {
-				
-				fs.writeFileSync(this.#path, JSON.stringify(products));
-			} catch (err) {
-				return `Error: ${err}`;
-			};
-		} else {
-			return `No hay productos con el ID: ${id}`;
-		};
-	};
-
-}
+};
 
 export default ProductManager
 
