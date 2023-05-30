@@ -23,25 +23,24 @@
 // hice: npm i express > crea: "dependencies": {"express": "^4.18.2"} en package.json
 
 import express from 'express'
-//import ProductManager from "../ProductManager3.js"
-// import products from "../products.json"
+import ProductManager from "./ProductManager3.js"
 
 const app = express()
 
-//const product1 = new ProductManager()
+const product1 = new ProductManager() //instancio la clase 
 
 app.use(express.urlencoded({extended:true}))
 
-app.get("/products", (res, req) => {
-    let{limit} = req.query;
-    let productsLimit = products.slice(0,parseInt(limit))
-    res.send(productsLimit)
-
+app.get("/products", (req, res) => {
+    const products = product1.getProducts() //creo una variable que contenga el resultado de llamar al metodo
+    let{limit} = req.query; //creo una variable que contenga el limit pasado por query http://localhost:8080/products?limit=3
+    if(limit) return res.json(products.slice(0,parseInt(limit)))//si me pasan un limit lo uso
+    return res.json(products)// si no me pasan un limit salta al segundo return
 })
 
 app.get("/products/:pid", (req, res) =>{
-    const {pid} = req.params;
-    const product = products.find(product => product.id == pid)
+    const {pid} = req.params; //creo una variable que contenga el id pasado por params
+    const product = product1.getProductById(pid)//creo una variable que contenga el resultado de llamar al metodo con el id pasado como parametro http://localhost:8080/products/4
     if(product) return res.json(product)
     res.json({error: "Producto no encontrado"})
 })

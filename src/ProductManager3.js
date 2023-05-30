@@ -1,3 +1,4 @@
+import { json } from "express";
 import fs from "fs"
 
 class ProductManager {
@@ -7,7 +8,7 @@ class ProductManager {
 
     constructor() {
         this.#products = [];
-        this.#path = 'products.json';
+        this.#path = './products.json';
         this.#addFile();
     }
 
@@ -51,7 +52,8 @@ class ProductManager {
     }
 
     getProducts() {
-        return this.#products;
+        const dataProducts = fs.readFileSync(this.#path, 'utf-8')
+        return JSON.parse(dataProducts);
     }
 
     getProductById(id) {
