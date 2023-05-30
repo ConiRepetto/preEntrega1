@@ -29,21 +29,21 @@ const app = express()
 
 const product1 = new ProductManager() //instancio la clase 
 
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 
 app.get("/products", (req, res) => {
     const products = product1.getProducts() //creo una variable que contenga el resultado de llamar al metodo
-    let{limit} = req.query; //creo una variable que contenga el limit pasado por query http://localhost:8080/products?limit=3
-    if(limit) return res.json(products.slice(0,parseInt(limit)))//si me pasan un limit lo uso
+    let { limit } = req.query; //creo una variable que contenga el limit pasado por query http://localhost:8080/products?limit=3
+    if (limit) return res.json(products.slice(0, parseInt(limit)))//si me pasan un limit lo uso
     //if(isNaN(limit)) res.json({error: "Limite ingresado invalido"})
     return res.json(products)// si no me pasan un limit salta al segundo return
 })
 
-app.get("/products/:pid", (req, res) =>{
-    const {pid} = req.params; //creo una variable que contenga el id pasado por params
+app.get("/products/:pid", (req, res) => {
+    const { pid } = req.params; //creo una variable que contenga el id pasado por params
     const product = product1.getProductById(pid)//creo una variable que contenga el resultado de llamar al metodo con el id pasado como parametro http://localhost:8080/products/4
-    if(product) return res.json(product)
-    res.json({error: "Producto no encontrado"})
+    if (product) return res.json(product)
+    res.json({ error: "Producto no encontrado" })
 })
 
 app.listen(8080, () => {
