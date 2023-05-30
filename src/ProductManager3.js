@@ -8,7 +8,7 @@ class ProductManager {
 
     constructor() {
         this.#products = [];
-        this.#path = './products.json';
+        this.#path = './src/products.json';
         this.#addFile();
     }
 
@@ -53,7 +53,7 @@ class ProductManager {
 
     getProducts() {
         const dataProducts = fs.readFileSync(this.#path, 'utf-8')
-        return JSON.parse(dataProducts);
+        return JSON.parse(dataProducts); //decirle que lea el .json no el array
     }
 
     getProductById(id) {

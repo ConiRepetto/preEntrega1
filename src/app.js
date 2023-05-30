@@ -35,6 +35,7 @@ app.get("/products", (req, res) => {
     const products = product1.getProducts() //creo una variable que contenga el resultado de llamar al metodo
     let{limit} = req.query; //creo una variable que contenga el limit pasado por query http://localhost:8080/products?limit=3
     if(limit) return res.json(products.slice(0,parseInt(limit)))//si me pasan un limit lo uso
+    //if(isNaN(limit)) res.json({error: "Limite ingresado invalido"})
     return res.json(products)// si no me pasan un limit salta al segundo return
 })
 
@@ -58,7 +59,7 @@ app.listen(8080, () => {
 // console.log(product1.addProduct('Broncodilatadora', 'Artesanal. Flores naturales. Eucalyptus globulus y aloe barbadensis. Cera de abejas de opérculo', 3000, 'no def', 'bronco1', 120))
 // console.log(product1.addProduct('Jabón medicinal', 'De glicerina vegetal. Limpieza hidratante. Artesanal. Hipoalergénico.Peso 100g', 1500, 'no def', 'jabon1', 1000))
 // console.log(product1.addProduct('Pomada descongestiva', 'Con eucalyptus cinerea, alcanfor y menta común. Para ayudarte a ventilar mejor.', 2000, 'no def', 'crema3', 100))
-// //console.log(product1.addProduct('Pomada descongestiva', 2000, 'crema3', 100)) //Prueba Error en AddProduct
+//console.log(product1.addProduct('Pomada descongestiva', 2000, 'crema3', 100)) //Prueba Error en AddProduct
 // console.log(product1.getProducts())
 // console.log(product1.getProductById(1));
 // console.log(product1.updateProduct(1, "stock", 200));
