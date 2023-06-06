@@ -22,15 +22,18 @@ class ProductManager {
         }
     }
 
-    addProduct = (title, description, price, thumbnail, code, stock) => {
+    addProduct = (title, description, code, price, status, stock,category, thumbnail) => {
         const product = {
             id: this.#products.length + 1,
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock
+            title: String,
+            description: String,
+            code: String,
+            price: Number,
+            status: Boolean,
+            stock: Number,
+            category: String,
+            thumbnail: String,
+            
         }
         const existsProduct = this.#products.find((element) => {
             return element.id == product.id
@@ -39,7 +42,7 @@ class ProductManager {
             return element.code == product.code
         })
 
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
+        if (!title || !description || !code || !price || ! status || !stock || !category || !thumbnail ) {
             throw new Error("Error: Falta completar campos del producto")
         } else if (existsProduct || existsCode) {
             console.log('Error: Producto ya agregado a la lista')
@@ -101,7 +104,7 @@ export default ProductManager
 
 // let product1 = new ProductManager()
 
-
+// console.log(product1.addProduct('Crema Facial Diurna', 'Hecho a mano. Hipoalergénico. En ecoenvases reutilizables de 50cc', 'crema1', 2500, true, 100, 'cremas','no def'))
 
 // console.log(product1.addProduct('Crema Facial Diurna', 'Hecho a mano. Hipoalergénico. En ecoenvases reutilizables de 50cc', 2500, 'no def', 'crema1', 100))
 // console.log(product1.addProduct('Crema Facial Nocturna', 'Crema facial terapéutica nocturna', 3000, 'no def', 'creman2', 150))
