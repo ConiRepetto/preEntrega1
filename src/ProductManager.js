@@ -22,14 +22,14 @@ class ProductManager {
         }
     }
 
-    addProduct = (title, description, code, price, status, stock,category, thumbnail) => {
+    addProduct = (title, description, code, price, stock,category, thumbnail) => {
         const product = {
             id: this.#products.length + 1,
             title: String,
             description: String,
             code: String,
             price: Number,
-            status: Boolean,
+            status: true,
             stock: Number,
             category: String,
             thumbnail: String,
@@ -42,7 +42,7 @@ class ProductManager {
             return element.code == product.code
         })
 
-        if (!title || !description || !code || !price || ! status || !stock || !category || !thumbnail ) {
+        if (!title || !description || !code || !price || !stock || !category || !thumbnail ) {
             throw new Error("Error: Falta completar campos del producto")
         } else if (existsProduct || existsCode) {
             console.log('Error: Producto ya agregado a la lista')

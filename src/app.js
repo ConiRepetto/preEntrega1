@@ -12,7 +12,7 @@ app.get("/", (req, res) =>{
     res.send("<h1 style='color: green'>Bienvenido a mi tienda</h1>")
 })
 
-app.get("/products", (req, res) => {
+app.get("/api/products", (req, res) => {
     const products = product1.getProducts() //creo una variable que contenga el resultado de llamar al metodo
     let { limit } = req.query; //creo una variable que contenga el limit pasado por query http://localhost:8080/products?limit=3
     if (limit) return res.json(products.slice(0, parseInt(limit)))//si me pasan un limit lo uso
@@ -20,24 +20,41 @@ app.get("/products", (req, res) => {
     return res.json(products)// si no me pasan un limit salta al segundo return
 })
 
-app.get("/products/:pid", (req, res) => {
+app.get("/api/products/:pid", (req, res) => {
     const { pid } = req.params; //creo una variable que contenga el id pasado por params
     const product = product1.getProductById(pid)//creo una variable que contenga el resultado de llamar al metodo con el id pasado como parametro http://localhost:8080/products/4
     if (product) return res.json(product)
     res.json({ error: "Producto no encontrado" })
 })
 
-app.post("/products",(req, res)=>{
+
+
+app.post("/api/products",(req, res)=>{
     const product = req.body;
     const newProduct = product1.addProduct(product)
-    res.status(201).json(product)
+    res.status(201).json(newProduct)
 })
 
 
+app.put("/api/products/:upId",(req, res)=>{
+    const {upId} = req.params;
+    const {key, value} = req.body
+    const updateProduct = product1.updateProduct(upId, key, value)
+    res.status(201).json(updateProduct)
+})
 
-app.get("/carts", (req, res) => {})
+
+app.delete("/api/products/:pid", (req, res) => {
+    const { pid } = req.params; //creo una variable que contenga el id pasado por params
+    const product = product1.deleteProduct(pid)//creo una variable que contenga el resultado de llamar al metodo con el id pasado como parametro http://localhost:8080/products/4
+    if (product) return res.json(product)
+    res.json({ error: "Producto no encontrado" })
+})
 
 
+app.get("/api/carts", (req, res) =>{
+    res.send("<h1 style='color: green'>Carritos </h1>")
+})
 
 app.listen(8080, () => {
     console.log("Server is running on port 8080")
